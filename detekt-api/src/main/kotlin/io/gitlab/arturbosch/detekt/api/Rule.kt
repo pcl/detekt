@@ -8,7 +8,7 @@ import org.jetbrains.kotlin.psi.KtFile
  * or readability.
  *
  * A rule is implemented using the visitor pattern and should be started using the visit(KtFile)
- * function. If calculations must be done before or after the visiting process, here are
+ * function. If calculations must be done before or after the visiting process, there are
  * two predefined (preVisit/postVisit) functions which can be overridden to setup/teardown additional data.
  *
  * @author Artur Bosch
