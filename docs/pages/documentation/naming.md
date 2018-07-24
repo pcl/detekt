@@ -181,6 +181,55 @@ class Manager {
 }
 ```
 
+### NoNameShadowing
+
+This rule reports occurrences of name shadowing within a file. Name shadowing leads to surprising bugs, especially
+as a file is maintained over time.
+
+**Severity**: Maintainability
+
+**Debt**: 5min
+
+#### Noncompliant Code:
+
+```kotlin
+class A {
+    val foo: String?
+
+    fun doThings(val foo: String) { // this shadows the class-level name
+        ...
+    }
+}
+
+fun functionWithShadowedNames() {
+    val foo: String?
+
+    if (<condition>) {
+        val foo: String? // this shadows the name in the outer scope
+    }
+}
+```
+
+#### Compliant Code:
+
+```kotlin
+class A {
+    val foo: String?
+
+    fun doThings(val bar: String) { // parameter name differs from the class member value
+        ...
+    }
+}
+
+fun functionWithoutShadowedNames() {
+    val foo: String?
+
+    if (<condition>) {
+        val bar: String? // this does not shadow the name in the outer scope
+    }
+}
+```
+
 ### ObjectPropertyNaming
 
 Reports when property names inside objects which do not follow the specified naming convention are used.

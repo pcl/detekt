@@ -312,6 +312,8 @@ naming:
   MemberNameEqualsClassName:
     active: false
     ignoreOverriddenFunction: true
+  NoNameShadowing:
+    active: true
   ObjectPropertyNaming:
     active: true
     propertyPattern: '[A-Za-z][_A-Za-z0-9]*'
