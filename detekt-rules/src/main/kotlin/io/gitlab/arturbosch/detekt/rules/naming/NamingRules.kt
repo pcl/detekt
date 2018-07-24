@@ -3,6 +3,7 @@ package io.gitlab.arturbosch.detekt.rules.naming
 import io.gitlab.arturbosch.detekt.api.Config
 import io.gitlab.arturbosch.detekt.api.MultiRule
 import io.gitlab.arturbosch.detekt.api.Rule
+import org.jetbrains.kotlin.com.intellij.psi.PsiFile
 import org.jetbrains.kotlin.name.SpecialNames
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtEnumEntry
@@ -31,6 +32,7 @@ class NamingRules(config: Config = Config.empty) : MultiRule() {
 	private val functionMaxNameLengthRule = FunctionMaxLength(config)
 	private val functionMinNameLengthRule = FunctionMinLength(config)
 	private val forbiddenClassNameRule = ForbiddenClassName(config)
+	private val noNameShadowingRule = NoNameShadowing(config)
 
 	override val rules: List<Rule> = listOf(
 			variableNamingRule,
@@ -44,12 +46,18 @@ class NamingRules(config: Config = Config.empty) : MultiRule() {
 			functionNamingRule,
 			functionMaxNameLengthRule,
 			functionMinNameLengthRule,
-			forbiddenClassNameRule
+			forbiddenClassNameRule,
+			noNameShadowingRule
 	)
 
 	override fun visitPackageDirective(directive: KtPackageDirective) {
 		super.visitPackageDirective(directive)
 		packageNamingRule.runIfActive { visitPackageDirective(directive) }
+	}
+
+	override fun visitFile(file: PsiFile?) {
+		super.visitFile(file)
+		noNameShadowingRule.visitFile(file)
 	}
 
 	override fun visitNamedDeclaration(declaration: KtNamedDeclaration) {
